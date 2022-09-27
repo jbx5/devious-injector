@@ -228,8 +228,8 @@ public class DrawAfterWidgets extends AbstractInjector
 						so let's make it easier by just checking that they are there.
 					 */
 					if (insns.stream().filter(i2 -> i2 instanceof PushConstantInstruction).count() != 2
-						|| insns.stream().filter(i2 -> i2 instanceof IMul).count() != 1
-						|| insns.stream().filter(i2 -> i2 instanceof GetStatic).count() != 1)
+							|| insns.stream().filter(i2 -> i2 instanceof IMul).count() != 1
+							|| insns.stream().filter(i2 -> i2 instanceof GetStatic).count() != 1)
 					{
 						continue;
 					}
@@ -241,11 +241,11 @@ public class DrawAfterWidgets extends AbstractInjector
 				for (Label l : labelsToInjectAfter)
 				{
 					InvokeInterface invoke = new InvokeInterface(instructions,
-						new net.runelite.asm.pool.Method(
-							new net.runelite.asm.pool.Class(CALLBACKS),
-							"drawAfterWidgets",
-							new Signature("()V")
-						)
+							new net.runelite.asm.pool.Method(
+									new net.runelite.asm.pool.Class(CALLBACKS),
+									"drawAfterWidgets",
+									new Signature("()V")
+							)
 					);
 
 					instructions.addInstruction(instructions.getInstructions().indexOf(l) + 1, invoke);

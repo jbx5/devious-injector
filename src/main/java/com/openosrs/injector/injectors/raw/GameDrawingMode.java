@@ -22,8 +22,8 @@ public class GameDrawingMode extends AbstractInjector
 	public void inject()
 	{
 		final ClassFile clientVanilla = inject.toVanilla(
-			inject.getDeobfuscated()
-				.findClass("Client")
+				inject.getDeobfuscated()
+						.findClass("Client")
 		);
 		final Field gameDrawingMode = InjectUtil.findField(inject, "gameDrawingMode", "Client").getPoolField();
 

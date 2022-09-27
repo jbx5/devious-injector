@@ -96,12 +96,12 @@ public class InjectConstruct extends AbstractInjector
 		final ClassFile classToConstruct = inject.toVanilla(deobClass);
 
 		Signature constr = new Signature.Builder()
-			.addArguments(apiMethod.getType().getArguments().stream()
-				.map(t -> InjectUtil.apiToDeob(inject, t))
-				.map(t -> InjectUtil.deobToVanilla(inject, t))
-				.collect(Collectors.toList()))
-			.setReturnType(Type.VOID)
-			.build();
+				.addArguments(apiMethod.getType().getArguments().stream()
+						.map(t -> InjectUtil.apiToDeob(inject, t))
+						.map(t -> InjectUtil.deobToVanilla(inject, t))
+						.collect(Collectors.toList()))
+				.setReturnType(Type.VOID)
+				.build();
 
 		final net.runelite.asm.Method constructor = classToConstruct.findMethod("<init>", constr);
 		if (constructor == null)

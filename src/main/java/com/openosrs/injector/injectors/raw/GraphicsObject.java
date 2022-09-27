@@ -28,13 +28,13 @@ public class GraphicsObject extends AbstractInjector
 	public void inject()
 	{
 		final ClassFile graphicsObjectVanilla = inject.toVanilla(
-			inject.getDeobfuscated()
-				.findClass("GraphicsObject")
+				inject.getDeobfuscated()
+						.findClass("GraphicsObject")
 		);
 
 		final ClassFile renderableVanilla = inject.toVanilla(
-			inject.getDeobfuscated()
-				.findClass("Renderable")
+				inject.getDeobfuscated()
+						.findClass("Renderable")
 		);
 
 		graphicsObjectVanilla.clearFinal();

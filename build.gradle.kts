@@ -14,17 +14,18 @@ plugins {
     `maven-publish`
 }
 
-val oprsver = "4.31.1"
+val oprsver = "4.31.2"
+val deviousver = "1.0.11-SNAPSHOT"
 
 group = "com.openosrs"
-version = "2.0.2"
+version = "2.0.5.6"
 
 repositories {
     mavenCentral()
     mavenLocal()
     maven {
         url = uri("https://repo.runelite.net")
-        url = uri("https://raw.githubusercontent.com/open-osrs/hosting/master")
+        url = uri("https://raw.githubusercontent.com/jbx5/hosting/master")
         url = uri("https://repo.openosrs.com/repository/maven")
     }
 }
@@ -42,7 +43,7 @@ dependencies {
         exclude(group = "com.google.j2objc", module = "j2objc-annotations")
         exclude(group = "org.codehaus.mojo", module = "animal-sniffer-annotations")
     }
-    implementation("com.openosrs:deobfuscator:${oprsver}") {
+    implementation("net.unethicalite:deobfuscator:${deviousver}") {
         isTransitive = false
     }
 

@@ -100,9 +100,9 @@ public class InjectHookMethod extends AbstractInjector
 				final Method targetMethod = InjectUtil.findMethod(inject, hookName, deobTarget.getName(), sig -> InjectUtil.argsMatch(sig, deobSig), notStatic, false);
 
 				final net.runelite.asm.pool.Method hookMethod = new net.runelite.asm.pool.Method(
-					targetClass.getPoolClass(),
-					mixinMethod.getName(),
-					mixinMethod.getDescriptor()
+						targetClass.getPoolClass(),
+						mixinMethod.getName(),
+						mixinMethod.getDescriptor()
 				);
 
 				inject(targetMethod, hookMethod, end);
@@ -162,22 +162,22 @@ public class InjectHookMethod extends AbstractInjector
 		for (Type type : hookMethod.getType().getArguments())
 		{
 			iterator.add(
-				InjectUtil.createLoadForTypeIndex(
-					instructions,
-					type,
-					varIdx
-				)
+					InjectUtil.createLoadForTypeIndex(
+							instructions,
+							type,
+							varIdx
+					)
 			);
 
 			varIdx += type.getSize();
 		}
 
 		iterator.add(
-			InjectUtil.createInvokeFor(
-				instructions,
-				hookMethod,
-				method.isStatic()
-			)
+				InjectUtil.createInvokeFor(
+						instructions,
+						hookMethod,
+						method.isStatic()
+				)
 		);
 	}
 

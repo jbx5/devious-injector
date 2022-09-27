@@ -150,7 +150,7 @@ public class InjectHook extends AbstractInjector
 		Set<Instruction> doneIh = new HashSet<>();
 
 		e.addExecutionVisitor((
-			InstructionContext ic) ->
+				InstructionContext ic) ->
 		{
 			Instruction i = ic.getInstruction();
 			Instructions ins = i.getInstructions();
@@ -400,13 +400,13 @@ public class InjectHook extends AbstractInjector
 		Instruction getInvoke(Instructions instructions)
 		{
 			return InjectUtil.createInvokeFor(
-				instructions,
-				new net.runelite.asm.pool.Method(
-					targetClass,
-					method.getName(),
-					method.getDescriptor()
-				),
-				method.isStatic()
+					instructions,
+					new net.runelite.asm.pool.Method(
+							targetClass,
+							method.getName(),
+							method.getDescriptor()
+					),
+					method.isStatic()
 			);
 		}
 	}
