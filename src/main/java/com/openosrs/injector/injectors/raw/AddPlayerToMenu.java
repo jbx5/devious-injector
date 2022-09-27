@@ -42,7 +42,7 @@ public class AddPlayerToMenu extends AbstractInjector
 	{
 		final Method addPlayerOptions = inject.toVanilla(inject.getDeobfuscated().findClass("Scene")).findMethod("copy$addPlayerToMenu");
 		final net.runelite.asm.pool.Method shouldHideAttackOptionFor =
-			inject.getVanilla().findClass("client").findMethod("shouldHideAttackOptionFor").getPoolMethod();
+				inject.getVanilla().findClass("client").findMethod("shouldHideAttackOptionFor").getPoolMethod();
 //		final net.runelite.asm.pool.Method shouldDrawMethod =
 //			inject.getVanilla().findStaticMethod("shouldDraw").getPoolMethod();
 
@@ -88,7 +88,7 @@ public class AddPlayerToMenu extends AbstractInjector
 	private void injectHideAttack(Method addPlayerOptions, net.runelite.asm.pool.Method shouldHideAttackOptionFor)
 	{
 		final Field AttackOption_hidden =
-			InjectUtil.findField(inject, "AttackOption_hidden", "AttackOption").getPoolField();
+				InjectUtil.findField(inject, "AttackOption_hidden", "AttackOption").getPoolField();
 		final Field attackOption = InjectUtil.findField(inject, "playerAttackOption", "Client").getPoolField();
 
 		// GETSTATIC					GETSTATIC
