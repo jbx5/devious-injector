@@ -60,8 +60,8 @@ public class RSApiClass extends ClassVisitor implements Iterable<RSApiMethod>
 			if (imported != null)
 			{
 				imports.computeIfAbsent(
-					imported.getValueString(),
-					(str) -> new ArrayList<>()
+						imported.getValueString(),
+						(str) -> new ArrayList<>()
 				).add(method);
 			}
 		}

@@ -19,16 +19,20 @@ import com.openosrs.injector.injectors.RSApiInjector;
 import com.openosrs.injector.injectors.raw.AddPlayerToMenu;
 import com.openosrs.injector.injectors.raw.ClearColorBuffer;
 import com.openosrs.injector.injectors.raw.CopyRuneLiteClasses;
+import com.openosrs.injector.injectors.raw.DesktopPlatformInfoProviderRunelite;
 import com.openosrs.injector.injectors.raw.DrawMenu;
 import com.openosrs.injector.injectors.raw.GameDrawingMode;
 import com.openosrs.injector.injectors.raw.GraphicsObject;
 import com.openosrs.injector.injectors.raw.Occluder;
+import com.openosrs.injector.injectors.raw.PlatformInfoRunelite;
+import com.openosrs.injector.injectors.raw.PlatformInfoVanilla;
 import com.openosrs.injector.injectors.raw.RasterizerAlpha;
 import com.openosrs.injector.injectors.raw.RenderDraw;
 import com.openosrs.injector.injectors.raw.RuneLiteIterables;
 import com.openosrs.injector.injectors.raw.RuneliteMenuEntry;
 import com.openosrs.injector.injectors.raw.RuneliteObject;
 import com.openosrs.injector.injectors.raw.ScriptVM;
+import com.openosrs.injector.injectors.raw.ServerPacketReceived;
 import com.openosrs.injector.rsapi.RSApi;
 import com.openosrs.injector.transformers.InjectTransformer;
 import com.openosrs.injector.transformers.Java8Ifier;
@@ -48,18 +52,20 @@ public class Injection extends InjectData implements InjectTaskHandler
 	private static final Logger log = Logging.getLogger(Injection.class);
 	public static boolean development = true;
 	public static String skips = "";
+	public static String mode = "";
 
-	public Injection(File vanilla, File rsclient, File mixins, FileTree rsapi, boolean development, String skip)
+	public Injection(File vanilla, File rsclient, File mixins, FileTree rsapi, boolean development, String skip, String mode)
 	{
 		super(
-			load(vanilla),
-			load(rsclient),
-			load(mixins),
-			new RSApi(rsapi)
+				load(vanilla),
+				load(rsclient),
+				load(mixins),
+				new RSApi(rsapi)
 		);
 
 		Injection.development = development;
 		Injection.skips = skip;
+		Injection.mode = mode;
 	}
 
 	public void inject()
@@ -111,6 +117,22 @@ public class Injection extends InjectData implements InjectTaskHandler
 
 		inject(new RuneliteMenuEntry(this));
 
+		inject(new ServerPacketReceived(this));
+
+		if (mode.equals("") || mode.equals("v"))
+		{
+			System.out.println("Inject Vanilla");
+			inject(new PlatformInfoVanilla(this));
+		}
+		else if (mode.equals("r"))
+		{
+			System.out.println("Inject Runelite & Vanilla");
+			inject(new PlatformInfoRunelite(this));
+
+			inject(new DesktopPlatformInfoProviderRunelite(this));
+		}
+
+
 		validate(new InjectorValidator(this));
 
 		transform(new SourceChanger(this));
@@ -152,10 +174,10 @@ public class Injection extends InjectData implements InjectTaskHandler
 
 			String completionMsg = injector.getCompletionMsg();
 
-			if (completionMsg != null)
-			{
-				log.lifecycle("{} {}", name, completionMsg);
-			}
+//			if (completionMsg != null)
+//			{
+			log.lifecycle("{} {}", name, completionMsg);
+//			}
 		}
 
 		if (injector instanceof Validator)

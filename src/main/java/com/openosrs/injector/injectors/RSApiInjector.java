@@ -109,7 +109,7 @@ public class RSApiInjector extends AbstractInjector
 					ClassFile deobApiTarget = InjectUtil.deobFromApiMethod(inject, apiMethod);
 
 					if (deobApiTarget != deobClass &&
-						deobApiTarget.findField(deobField.getName()) != null)
+							deobApiTarget.findField(deobField.getName()) != null)
 					{
 						it.remove();
 						continue;
@@ -188,7 +188,7 @@ public class RSApiInjector extends AbstractInjector
 					ClassFile deobApiTarget = InjectUtil.deobFromApiMethod(inject, apiMethod);
 
 					if (deobApiTarget != deobClass &&
-						deobApiTarget.findMethod(deobMethod.getName()) != null)
+							deobApiTarget.findMethod(deobMethod.getName()) != null)
 					{
 						it.remove();
 						continue;
@@ -198,7 +198,7 @@ public class RSApiInjector extends AbstractInjector
 				final Signature apiSig = apiMethod.getSignature();
 
 				if (apiMethod.isInjected()
-					|| !InjectUtil.apiToDeobSigEquals(inject, deobSig, apiSig))
+						|| !InjectUtil.apiToDeobSigEquals(inject, deobSig, apiSig))
 				{
 					it.remove();
 				}
@@ -281,10 +281,10 @@ public class RSApiInjector extends AbstractInjector
 				++set;
 				log.debug("[DEBUG] Injecting setter {} for {} into {}", apiMethod.getMethod(), field.getPoolField(), targetClass.getPoolClass());
 				InjectSetter.inject(
-					targetClass,
-					apiMethod,
-					targetField,
-					getter
+						targetClass,
+						apiMethod,
+						targetField,
+						getter
 				);
 			}
 			else
@@ -292,10 +292,10 @@ public class RSApiInjector extends AbstractInjector
 				++get;
 				log.debug("[DEBUG] Injecting getter {} for {} into {}", apiMethod.getMethod(), field.getPoolField(), targetClass.getPoolClass());
 				InjectGetter.inject(
-					targetClass,
-					apiMethod,
-					targetField,
-					getter
+						targetClass,
+						apiMethod,
+						targetField,
+						getter
 				);
 			}
 		}

@@ -46,8 +46,8 @@ public class RuneLiteIterables extends AbstractInjector
 		ClassFile runeliteIterableHashTableVanilla = inject.getVanilla().findClass(RUNELITE_ITERABLE_HASHTABLE);
 
 		final ClassFile nodeHashTableVanilla = inject.toVanilla(
-			inject.getDeobfuscated()
-				.findClass(RUNELITE_ITERABLE_HASHTABLE.replace("RuneLiteIterable", ""))
+				inject.getDeobfuscated()
+						.findClass(RUNELITE_ITERABLE_HASHTABLE.replace("RuneLiteIterable", ""))
 		);
 
 		Method copy = new Method(nodeHashTableVanilla, "iterator", new Signature("()Ljava/util/Iterator;"));
@@ -73,8 +73,8 @@ public class RuneLiteIterables extends AbstractInjector
 		ClassFile runeliteIterableNodeDequeVanilla = inject.getVanilla().findClass(RUNELITE_ITERABLE_NODE_DEQUE);
 
 		final ClassFile nodeDequeVanilla = inject.toVanilla(
-			inject.getDeobfuscated()
-				.findClass(RUNELITE_ITERABLE_NODE_DEQUE.replace("RuneLiteIterable", ""))
+				inject.getDeobfuscated()
+						.findClass(RUNELITE_ITERABLE_NODE_DEQUE.replace("RuneLiteIterable", ""))
 		);
 
 		Method copy = new Method(nodeDequeVanilla, "iterator", new Signature("()Ljava/util/Iterator;"));
@@ -100,8 +100,8 @@ public class RuneLiteIterables extends AbstractInjector
 		ClassFile runeliteIterableLinkDequeVanilla = inject.getVanilla().findClass(RUNELITE_ITERABLE_LINK_DEQUE);
 
 		final ClassFile linkDequeVanilla = inject.toVanilla(
-			inject.getDeobfuscated()
-				.findClass(RUNELITE_ITERABLE_LINK_DEQUE.replace("RuneLiteIterable", ""))
+				inject.getDeobfuscated()
+						.findClass(RUNELITE_ITERABLE_LINK_DEQUE.replace("RuneLiteIterable", ""))
 		);
 
 		Method copy = new Method(linkDequeVanilla, "iterator", new Signature("()Ljava/util/Iterator;"));

@@ -175,11 +175,11 @@ public class ScriptVM extends AbstractInjector
 					assert mulctx.getInstruction() instanceof IMul;
 
 					pcLocalVar = mulctx.getPops().stream()
-						.map(StackContext::getPushed)
-						.filter(i -> i.getInstruction() instanceof ILoad)
-						.map(i -> ((ILoad) i.getInstruction()).getVariableIndex())
-						.findFirst()
-						.orElse(null);
+							.map(StackContext::getPushed)
+							.filter(i -> i.getInstruction() instanceof ILoad)
+							.map(i -> ((ILoad) i.getInstruction()).getVariableIndex())
+							.findFirst()
+							.orElse(null);
 				}
 			}
 		}
@@ -208,10 +208,10 @@ public class ScriptVM extends AbstractInjector
 					{
 						//Find the istore
 						IStore istore = (IStore) instrCtx.getPushes().get(0).getPopped().stream()
-							.map(InstructionContext::getInstruction)
-							.filter(i -> i instanceof IStore)
-							.findFirst()
-							.orElse(null);
+								.map(InstructionContext::getInstruction)
+								.filter(i -> i instanceof IStore)
+								.findFirst()
+								.orElse(null);
 						if (istore != null)
 						{
 							currentOpcodeStore = istore;
@@ -225,9 +225,9 @@ public class ScriptVM extends AbstractInjector
 		// Add PutStatics to all Script AStores
 		{
 			int outerSciptIdx = scriptStores.stream()
-				.mapToInt(AStore::getVariableIndex)
-				.reduce(Math::min)
-				.orElseThrow(() -> new InjectException("Unable to find any Script AStores in runScript"));
+					.mapToInt(AStore::getVariableIndex)
+					.reduce(Math::min)
+					.orElseThrow(() -> new InjectException("Unable to find any Script AStores in runScript"));
 			log.debug("[DEBUG] Found script index {}", outerSciptIdx);
 
 			ListIterator<Instruction> instrIter = instrs.getInstructions().listIterator();

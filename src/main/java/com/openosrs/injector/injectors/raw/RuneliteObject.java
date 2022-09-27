@@ -36,8 +36,8 @@ public class RuneliteObject extends AbstractInjector
 		ClassFile runeliteObjectVanilla = inject.getVanilla().findClass(RUNELITE_OBJECT);
 
 		final ClassFile clientVanilla = inject.toVanilla(
-			inject.getDeobfuscated()
-				.findClass("Client")
+				inject.getDeobfuscated()
+						.findClass("Client")
 		);
 
 		Method copy = new Method(clientVanilla, "createRuneLiteObject", new Signature("()Lnet/runelite/api/RuneLiteObject;"));

@@ -70,10 +70,10 @@ public interface InjectUtil
 	 * @return The obfuscated version of the found method
 	 */
 	static Method findMethod(
-		InjectData data,
-		String name,
-		String classHint,
-		@Nullable Predicate<Signature> sig)
+			InjectData data,
+			String name,
+			String classHint,
+			@Nullable Predicate<Signature> sig)
 	{
 		return findMethod(data, name, classHint, sig, false, false);
 	}
@@ -87,10 +87,10 @@ public interface InjectUtil
 	 * @throws InjectException If the hint class couldn't be found, or no method matching the settings was found
 	 */
 	static Method findMethod(
-		InjectData data,
-		String name,
-		@Nullable String classHint)
-		throws InjectException
+			InjectData data,
+			String name,
+			@Nullable String classHint)
+			throws InjectException
 	{
 		return findMethod(data, name, classHint, null, false, false);
 	}
@@ -107,13 +107,13 @@ public interface InjectUtil
 	 * @throws InjectException If the hint class couldn't be found, or no method matching the settings was found
 	 */
 	static Method findMethod(
-		InjectData data,
-		String name,
-		@Nullable String classHint,
-		@Nullable Predicate<Signature> sig,
-		boolean notStatic,
-		boolean returnDeob)
-		throws InjectException
+			InjectData data,
+			String name,
+			@Nullable String classHint,
+			@Nullable Predicate<Signature> sig,
+			boolean notStatic,
+			boolean returnDeob)
+			throws InjectException
 	{
 		final ClassGroup deob = data.getDeobfuscated();
 		if (classHint != null)
@@ -332,12 +332,12 @@ public interface InjectUtil
 	static Signature apiToDeob(InjectData data, Signature api)
 	{
 		return new Signature.Builder()
-			.setReturnType(apiToDeob(data, api.getReturnValue()))
-			.addArguments(
-				api.getArguments().stream()
-					.map(type -> apiToDeob(data, type))
-					.collect(Collectors.toList())
-			).build();
+				.setReturnType(apiToDeob(data, api.getReturnValue()))
+				.addArguments(
+						api.getArguments().stream()
+								.map(type -> apiToDeob(data, type))
+								.collect(Collectors.toList())
+				).build();
 	}
 
 	static Type apiToDeob(InjectData data, Type api)

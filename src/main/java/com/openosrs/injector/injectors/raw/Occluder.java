@@ -33,9 +33,9 @@ public class Occluder extends AbstractInjector
 		 * This class the max view distance length, higher than this is useless though
 		 */
 		final Method occlude = inject.toVanilla(
-			inject.getDeobfuscated()
-				.findClass("Scene")
-				.findMethod("occlude")
+				inject.getDeobfuscated()
+						.findClass("Scene")
+						.findMethod("occlude")
 		);
 
 		int replaced = 0;

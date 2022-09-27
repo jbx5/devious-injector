@@ -44,9 +44,9 @@ import net.runelite.asm.signature.Signature;
 public class RasterizerAlpha extends AbstractInjector
 {
 	private static final net.runelite.asm.pool.Method DRAWALPHA = new net.runelite.asm.pool.Method(
-		new Class("client"),
-		"drawAlpha",
-		new Signature("([IIII)V")
+			new Class("client"),
+			"drawAlpha",
+			new Signature("([IIII)V")
 	);
 	private static final int ALPHA = 0xff000000;
 
@@ -108,8 +108,8 @@ public class RasterizerAlpha extends AbstractInjector
 
 				// If it's not a >> or a >>> or a + it's not alpha
 				if (colPushI instanceof IShR ||
-					colPushI instanceof IUShR ||
-					colPushI instanceof IAdd)
+						colPushI instanceof IUShR ||
+						colPushI instanceof IAdd)
 				{
 					// So we know we may be dealing with alpha here, now we need the alpha value
 					// earlier on in the method there's been a 256 - XXX, where xxx is alpha.
@@ -179,14 +179,14 @@ public class RasterizerAlpha extends AbstractInjector
 
 				// If we're copying from the same field we don't have to apply extra alpha again
 				if (colPushI instanceof IALoad
-					&& isSameField(r2dPx, colPusher.getPops().get(1)))
+						&& isSameField(r2dPx, colPusher.getPops().get(1)))
 				{
 					continue;
 				}
 
 				// If the value is 0, it's supposed to be transparent, not black
 				if (colPushI instanceof PushConstantInstruction
-					&& ((PushConstantInstruction) colPushI).getConstant().equals(0))
+						&& ((PushConstantInstruction) colPushI).getConstant().equals(0))
 				{
 					continue;
 				}

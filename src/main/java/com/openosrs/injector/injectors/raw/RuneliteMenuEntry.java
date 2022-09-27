@@ -52,8 +52,8 @@ public class RuneliteMenuEntry extends AbstractInjector
 		ClassFile runeliteMenuEntryVanilla = inject.getVanilla().findClass(RUNELITE_MENU_ENTRY);
 
 		final ClassFile clientVanilla = inject.toVanilla(
-			inject.getDeobfuscated()
-				.findClass("Client")
+				inject.getDeobfuscated()
+						.findClass("Client")
 		);
 
 		Method copy = clientVanilla.findMethod(methodName);
@@ -82,8 +82,8 @@ public class RuneliteMenuEntry extends AbstractInjector
 	private void addSwap(Method method, Field field)
 	{
 		final ClassFile clientVanilla = inject.toVanilla(
-			inject.getDeobfuscated()
-				.findClass("Client")
+				inject.getDeobfuscated()
+						.findClass("Client")
 		);
 
 		Instructions ins = method.getCode().getInstructions();
@@ -95,7 +95,7 @@ public class RuneliteMenuEntry extends AbstractInjector
 		{
 			Instruction i = iterator.next();
 
-			if (found < 1)
+			if (found < 3)
 			{
 				if (!(i instanceof GetStatic))
 				{
