@@ -771,17 +771,21 @@ public class MixinInjector extends AbstractInjector
 	@SuppressWarnings("unchecked")
 	private List<ClassFile> getMixins(Annotated from)
 	{
-		final Annotation mixin = from.findAnnotation(MIXIN);
-		if (mixin != null)
-		{
-			return List.of(InjectUtil.getVanillaClassFromAnnotationString(inject, mixin));
-		}
-		final Annotation mixins = from.findAnnotation(MIXINS);
-		if (mixins != null)
-		{
-			return ((List<Annotation>) mixins.getValue()).stream()
-					.map(mix -> InjectUtil.getVanillaClassFromAnnotationString(inject, mix))
-					.collect(Collectors.toUnmodifiableList());
+		try {
+			final Annotation mixin = from.findAnnotation(MIXIN);
+			if (mixin != null)
+			{
+				return List.of(InjectUtil.getVanillaClassFromAnnotationString(inject, mixin));
+			}
+			final Annotation mixins = from.findAnnotation(MIXINS);
+			if (mixins != null)
+			{
+				return ((List<Annotation>) mixins.getValue()).stream()
+						.map(mix -> InjectUtil.getVanillaClassFromAnnotationString(inject, mix))
+						.collect(Collectors.toUnmodifiableList());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		throw new IllegalArgumentException("No MIXIN or MIXINS found on " + from);
 	}
