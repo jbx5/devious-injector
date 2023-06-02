@@ -300,5 +300,21 @@ public class ScriptVM extends AbstractInjector
 		instrs.addInstruction(istorepc + 1, new ILoad(instrs, currentOpcodeStore.getVariableIndex()));
 		instrs.addInstruction(istorepc + 2, new InvokeStatic(instrs, vmExecuteOpcode.getPoolMethod()));
 		instrs.addInstruction(istorepc + 3, new IfNe(instrs, nextIteration));
+
+		Instructions runScriptInstrs = runScript.getCode().getInstructions();
+		ListIterator<Instruction> instrIter = runScriptInstrs.getInstructions().listIterator();
+		while (instrIter.hasNext()) {
+			Instruction instr = instrIter.next();
+
+			if (instr instanceof InvokeStatic)
+			{
+				InvokeStatic invokeStatic = (InvokeStatic) instr;
+				if(invokeStatic.getMethod().getType().getReturnValue().toString().equals("L"+scriptObName+";")) {
+					instrIter.add(new Dup(instrs));
+					instrIter.add(new InvokeStatic(instrs, setCurrentScript.getPoolMethod()));
+					instrIter.next();
+				}
+			}
+		}
 	}
 }
