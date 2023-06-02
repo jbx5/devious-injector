@@ -112,13 +112,14 @@ public class ScriptVM extends AbstractInjector
 		final ClassFile vanillaClient = vanilla.findClass("client");
 
 		// Next 4 should be injected by mixins, so don't need fail fast
-		final Method runScript = vanillaClient.findStaticMethod("copy$runScriptLogic");
+		final Method runScript = vanillaClient.findStaticMethod("copy$runScript");
+		final Method runScriptLogic = vanillaClient.findStaticMethod("copy$runScriptLogic");
 		final Method vmExecuteOpcode = vanillaClient.findStaticMethod("vmExecuteOpcode");
 		final Method setCurrentScript = vanillaClient.findStaticMethod("setCurrentScript");
 		final Field currentScriptPCField = vanillaClient.findField("currentScriptPC");
 
 		Execution e = new Execution(inject.getVanilla());
-		e.addMethod(runScript);
+		e.addMethod(runScriptLogic);
 		e.noInvoke = true;
 
 		AtomicReference<MethodContext> pcontext = new AtomicReference<>(null);
@@ -126,7 +127,7 @@ public class ScriptVM extends AbstractInjector
 		e.addMethodContextVisitor(pcontext::set);
 		e.run();
 
-		Instructions instrs = runScript.getCode().getInstructions();
+		Instructions instrs = runScriptLogic.getCode().getInstructions();
 
 		Set<AStore> scriptStores = new HashSet<>();
 		Integer pcLocalVar = null;
