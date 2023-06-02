@@ -112,7 +112,7 @@ public class ScriptVM extends AbstractInjector
 		final ClassFile vanillaClient = vanilla.findClass("client");
 
 		// Next 4 should be injected by mixins, so don't need fail fast
-		final Method runScript = vanillaClient.findStaticMethod("copy$runScript");
+		final Method runScript = vanillaClient.findStaticMethod("copy$runScriptLogic");
 		final Method vmExecuteOpcode = vanillaClient.findStaticMethod("vmExecuteOpcode");
 		final Method setCurrentScript = vanillaClient.findStaticMethod("setCurrentScript");
 		final Field currentScriptPCField = vanillaClient.findField("currentScriptPC");
