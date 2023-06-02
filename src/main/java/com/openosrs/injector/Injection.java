@@ -100,7 +100,7 @@ public class Injection extends InjectData implements InjectTaskHandler
 
 		//inject(new DrawAfterWidgets(this));
 
-		inject(new ScriptVM(this));
+		//inject(new ScriptVM(this));
 
 		// All GPU raw injectors should probably be combined, especially RenderDraw and Occluder
 		inject(new ClearColorBuffer(this));

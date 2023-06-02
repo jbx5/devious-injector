@@ -39,8 +39,8 @@ public class ServerPacketReceived extends AbstractInjector {
                         .findClass("Client")
         );
 
-        Method serverPacketReceiveMethod = InjectUtil.findMethod(inject, "method1349", "Client");
-        Field insertionPoint = InjectUtil.findField(inject, "field1391", "PacketWriter");
+        Method serverPacketReceiveMethod = InjectUtil.findMethod(inject, "method1434", "Client");
+        Field insertionPoint = InjectUtil.findField(inject, "field1390", "PacketWriter");
 
         Instructions ins = serverPacketReceiveMethod.getCode().getInstructions();
 
