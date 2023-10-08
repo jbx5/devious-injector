@@ -31,6 +31,7 @@ import com.openosrs.injector.injectors.raw.RenderDraw;
 import com.openosrs.injector.injectors.raw.RuneLiteIterables;
 import com.openosrs.injector.injectors.raw.RuneliteMenuEntry;
 import com.openosrs.injector.injectors.raw.RuneliteObject;
+import com.openosrs.injector.injectors.raw.RuneliteRasterizer;
 import com.openosrs.injector.injectors.raw.ScriptVM;
 import com.openosrs.injector.injectors.raw.ServerPacketReceived;
 import com.openosrs.injector.rsapi.RSApi;
@@ -83,6 +84,8 @@ public class Injection extends InjectData implements InjectTaskHandler
 		inject(new RuneLiteIterables(this));
 
 		inject(new RuneliteObject(this));
+
+		inject(new RuneliteRasterizer(this));
 
 		inject(new InterfaceInjector(this));
 
