@@ -15,10 +15,10 @@ plugins {
 }
 
 val oprsver = "4.31.2"
-val deviousver = "1.0.11-SNAPSHOT"
+val deviousver = "1.0.20-SNAPSHOT"
 
 group = "com.openosrs"
-version = "2.0.15"
+version = "2.0.16"
 
 repositories {
     mavenCentral()
