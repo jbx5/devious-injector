@@ -23,6 +23,7 @@ import com.openosrs.injector.injectors.raw.DesktopPlatformInfoProviderRunelite;
 import com.openosrs.injector.injectors.raw.DrawMenu;
 import com.openosrs.injector.injectors.raw.GameDrawingMode;
 import com.openosrs.injector.injectors.raw.GraphicsObject;
+import com.openosrs.injector.injectors.raw.JagexLauncherCredentials;
 import com.openosrs.injector.injectors.raw.Occluder;
 import com.openosrs.injector.injectors.raw.PlatformInfoRunelite;
 import com.openosrs.injector.injectors.raw.PlatformInfoVanilla;
@@ -135,6 +136,7 @@ public class Injection extends InjectData implements InjectTaskHandler
 			inject(new DesktopPlatformInfoProviderRunelite(this));
 		}
 
+		inject(new JagexLauncherCredentials(this));
 
 		validate(new InjectorValidator(this));
 
