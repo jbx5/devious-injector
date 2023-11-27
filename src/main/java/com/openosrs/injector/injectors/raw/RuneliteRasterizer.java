@@ -9,6 +9,7 @@ package com.openosrs.injector.injectors.raw;
 
 import com.openosrs.injector.injection.InjectData;
 import com.openosrs.injector.injectors.AbstractInjector;
+import org.objectweb.asm.Opcodes;
 import java.util.List;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.Field;
@@ -21,7 +22,6 @@ import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instructions.Dup;
 import net.runelite.asm.attributes.code.instructions.GetStatic;
 import net.runelite.asm.attributes.code.instructions.InvokeSpecial;
-import net.runelite.asm.attributes.code.instructions.InvokeStatic;
 import net.runelite.asm.attributes.code.instructions.New;
 import net.runelite.asm.attributes.code.instructions.PutStatic;
 import net.runelite.asm.attributes.code.instructions.Return;
@@ -52,8 +52,7 @@ public class RuneliteRasterizer extends AbstractInjector
 		);
 
 		final Field rasterizer = new Field(abstractRasterizerVanilla, "rasterizer", new Type("Lnet/runelite/api/Rasterizer;"));
-		rasterizer.setPublic();
-		rasterizer.setStatic();
+		rasterizer.setAccessFlags(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC | Opcodes.ACC_FINAL);
 		abstractRasterizerVanilla.addField(rasterizer);
 
 		final Method clinit = new Method(abstractRasterizerVanilla, "<clinit>", new Signature("()V"));
