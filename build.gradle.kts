@@ -18,7 +18,7 @@ val oprsver = "4.31.2"
 val deviousver = "1.0.20-SNAPSHOT"
 
 group = "com.openosrs"
-version = "2.0.19"
+version = "2.0.20"
 
 repositories {
     mavenCentral()
