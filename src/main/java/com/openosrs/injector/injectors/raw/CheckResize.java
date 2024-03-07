@@ -7,8 +7,6 @@
  */
 package com.openosrs.injector.injectors.raw;
 
-import java.util.HashMap;
-import java.util.Map;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
@@ -51,10 +49,13 @@ public class CheckResize extends AbstractInjector
 		final Type evictingDualNodeHashTableType = new Type("L" + evictingDualNodeHashTableVanilla.getName() + ";");
 
 		/**
-		 * Map all static EvictingDualNodeHashTable caches to de-obfuscated field names
+		 * Create checkResize method which invokes check on all static EvictingDualNodeHashTable caches
 		 */
 
-		final Map<Field, String> staticEvictingDualNodeHashTablefields = new HashMap<>();
+		final Method check = evictingDualNodeHashTableVanilla.findStaticMethod("check");
+		final Method checkResize = new Method(evictingDualNodeHashTableVanilla, "checkResize", new Signature("()V"));
+		final Code code = new Code(checkResize);
+		final Instructions ins = code.getInstructions();
 		for (ClassFile cf : deobGroup)
 		{
 			cf.getFields().stream()
@@ -65,24 +66,10 @@ public class CheckResize extends AbstractInjector
 						.findClass(deobField.getClassFile().getAnnotations().get(DeobAnnotations.OBFUSCATED_NAME).getValueString())
 						.findField(deobField.getAnnotations().get(DeobAnnotations.OBFUSCATED_NAME).getValueString());
 
-					staticEvictingDualNodeHashTablefields.put(vanillaField, deobField.getName());
+					ins.addInstruction(new LDC(ins, deobField.getName()));
+					ins.addInstruction(new GetStatic(ins, vanillaField.getPoolField()));
+					ins.addInstruction(new InvokeStatic(ins, check));
 				});
-		}
-
-		/**
-		 * Create checkResize method to invoke check method which is constructed in EvictingDualNodeHashTableMixin
-		 */
-
-		final Method check = evictingDualNodeHashTableVanilla.findStaticMethod("check");
-		final Method checkResize = new Method(evictingDualNodeHashTableVanilla, "checkResize", new Signature("()V"));
-		Code code = new Code(checkResize);
-		Instructions ins = code.getInstructions();
-		for (net.runelite.asm.Field f : staticEvictingDualNodeHashTablefields.keySet())
-		{
-			ins.addInstruction(new LDC(ins, staticEvictingDualNodeHashTablefields.get(f)));
-			ins.addInstruction(new GetStatic(ins, f.getPoolField()));
-			ins.addInstruction(new InvokeStatic(ins, check));
-			//System.out.println("field: " + f + " name: " + staticEvictingDualNodeHashTablefields.get(f));
 		}
 		ins.addInstruction(new VReturn(ins));
 		checkResize.setCode(code);
@@ -95,11 +82,11 @@ public class CheckResize extends AbstractInjector
 		 */
 
 		final Method clientCheckResize = new Method(clientVanilla, "checkResize", new Signature("()V"));
-		code = new Code(clientCheckResize);
-		ins = code.getInstructions();
-		ins.addInstruction(new InvokeStatic(ins, checkResize.getPoolMethod()));
-		ins.addInstruction(new VReturn(ins));
-		clientCheckResize.setCode(code);
+		final Code code2 = new Code(clientCheckResize);
+		final Instructions ins2 = code2.getInstructions();
+		ins2.addInstruction(new InvokeStatic(ins2, checkResize.getPoolMethod()));
+		ins2.addInstruction(new VReturn(ins2));
+		clientCheckResize.setCode(code2);
 		clientCheckResize.setPublic();
 		clientVanilla.addMethod(clientCheckResize);
 	}
