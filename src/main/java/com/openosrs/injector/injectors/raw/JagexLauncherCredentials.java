@@ -10,6 +10,7 @@ package com.openosrs.injector.injectors.raw;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Method;
@@ -56,6 +57,7 @@ public class JagexLauncherCredentials extends AbstractInjector
 
 		final AtomicBoolean createdGetStaticCredentialsProperty = new AtomicBoolean(false);
 		final AtomicInteger replacedEnvCount = new AtomicInteger(0);
+		final AtomicReference<net.runelite.asm.pool.Method> getenv = new AtomicReference<>();
 
 		Field staticClient = clientVanilla.findMethod("init").getCode().getInstructions().getInstructions().stream()
 			.filter(in -> in instanceof PutStatic && ((PutStatic) in).getMyField().getObfuscatedType().equals(clientType))
@@ -96,48 +98,44 @@ public class JagexLauncherCredentials extends AbstractInjector
 				}
 			}
 
-			if (replacedEnvCount.get() != JX_PROPERTY_KEYS.size())
-			{
-				cf.getMethods().stream()
-					.filter(m -> m.getCode() != null && m.getCode().getInstructions().getInstructions().stream()
-						.filter(in -> in instanceof LDC && ((LDC) in).getConstant() instanceof String && JX_PROPERTY_KEYS.contains(((LDC) in).getConstant()))
-						.count() == JX_PROPERTY_KEYS.size())
-					.findFirst()
-					.ifPresent(targetMethod ->
+			cf.getMethods().stream()
+				.filter(m -> m.getCode() != null && m.getCode().getInstructions().getInstructions().stream()
+					.filter(in -> in instanceof LDC && ((LDC) in).getConstant() instanceof String && JX_PROPERTY_KEYS.contains(((LDC) in).getConstant()))
+					.anyMatch(in -> JX_PROPERTY_KEYS.contains(((LDC) in).getConstant())))
+				.findFirst()
+				.ifPresent(targetMethod ->
+				{
+					final Code code = targetMethod.getCode();
+					final Instructions instructions = code.getInstructions();
+					final List<Instruction> ins = instructions.getInstructions();
+
+					for (int i = 0; i < ins.size(); i++)
 					{
-						final Code code = targetMethod.getCode();
-						final Instructions instructions = code.getInstructions();
-						final List<Instruction> ins = instructions.getInstructions();
+						Instruction in = ins.get(i);
 
-						for (int i = 0; i < ins.size(); i++)
+						if (in instanceof LDC && ((LDC) in).getConstant() instanceof String && JX_PROPERTY_KEYS.contains(((LDC) in).getConstant()))
 						{
-							Instruction in = ins.get(i);
-
-							if (in instanceof LDC && ((LDC) in).getConstant() instanceof String && JX_PROPERTY_KEYS.contains(((LDC) in).getConstant()))
+							//System.out.println("LDC: " + ((LDC) in).getConstant());
+							Instruction shouldBeInvokeStatic = i + 1 < ins.size() ? ins.get(i + 1) : null;
+							if (shouldBeInvokeStatic != null && shouldBeInvokeStatic instanceof InvokeStatic && ((InvokeStatic) shouldBeInvokeStatic).getMethod().getName().equals("getenv"))
 							{
-								//System.out.println("LDC: " + ((LDC) in).getConstant());
-								Instruction shouldBeInvokeStatic = i + 1 < ins.size() ? ins.get(i + 1) : null;
-								if (shouldBeInvokeStatic != null && shouldBeInvokeStatic instanceof InvokeStatic && ((InvokeStatic) shouldBeInvokeStatic).getMethod().getName().equals("getenv"))
-								{
-									ins.set(i + 1, new InvokeStatic(instructions, getStaticCredentialsProperty));
-									replacedEnvCount.getAndIncrement();
-									//System.out.println("Replace: " + " cf: " + cf + " method: " + ((InvokeStatic) in).getMethod() + " -> " + getStaticCredentialsProperty);
-								}
+								ins.set(i + 1, new InvokeStatic(instructions, getStaticCredentialsProperty));
+								replacedEnvCount.getAndIncrement();
+								getenv.set(((InvokeStatic) shouldBeInvokeStatic).getMethod());
+								//System.out.println("Replace: " + " cf: " + cf + " method: " + ((InvokeStatic) shouldBeInvokeStatic).getMethod() + " -> " + getStaticCredentialsProperty);
 							}
 						}
-					});
-			}
-
-			if (createdGetStaticCredentialsProperty.get() && replacedEnvCount.get() == JX_PROPERTY_KEYS.size())
-			{
-				System.out.println("JagexLauncherCredentials injection was successfully," + " replaced " + JX_PROPERTY_KEYS + " with " + getStaticCredentialsProperty);
-				break;
-			}
+					}
+				});
 		}
 
-		if (!createdGetStaticCredentialsProperty.get() || replacedEnvCount.get() != JX_PROPERTY_KEYS.size())
+		if (createdGetStaticCredentialsProperty.get() && replacedEnvCount.get() >= JX_PROPERTY_KEYS.size())
 		{
-			System.err.println("JagexLauncherCredentials injection was unsuccessfully, manual fix required!");
+			System.out.println("JagexLauncherCredentials injection was successfully" + " - replaced " + replacedEnvCount.get() + " " + getenv + " with " + getStaticCredentialsProperty);
+		}
+		else
+		{
+			System.err.println("JagexLauncherCredentials injection was unsuccessfully - manual fix required!");
 		}
 	}
 }
