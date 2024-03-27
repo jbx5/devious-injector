@@ -17,6 +17,7 @@ import com.openosrs.injector.injectors.InterfaceInjector;
 import com.openosrs.injector.injectors.MixinInjector;
 import com.openosrs.injector.injectors.RSApiInjector;
 import com.openosrs.injector.injectors.raw.AddPlayerToMenu;
+import com.openosrs.injector.injectors.raw.CheckResize;
 import com.openosrs.injector.injectors.raw.ClearColorBuffer;
 import com.openosrs.injector.injectors.raw.CopyRuneLiteClasses;
 import com.openosrs.injector.injectors.raw.DesktopPlatformInfoProviderRunelite;
@@ -135,6 +136,8 @@ public class Injection extends InjectData implements InjectTaskHandler
 
 			inject(new DesktopPlatformInfoProviderRunelite(this));
 		}
+
+		inject(new CheckResize(this));
 
 		inject(new JagexLauncherCredentials(this));
 
