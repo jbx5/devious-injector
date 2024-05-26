@@ -55,14 +55,15 @@ public class RuneliteRasterizer extends AbstractInjector
 		rasterizer.setAccessFlags(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC | Opcodes.ACC_FINAL);
 		abstractRasterizerVanilla.addField(rasterizer);
 
-		final Method clinit = new Method(abstractRasterizerVanilla, "<clinit>", new Signature("()V"));
-		clinit.setPublic();
-		clinit.setStatic(true);
+		//final Method clinit = new Method(abstractRasterizerVanilla, "<clinit>", new Signature("()V"));
+		final Method clinit = abstractRasterizerVanilla.findMethod("<clinit>");
+		//clinit.setPublic();
+		//clinit.setStatic(true);
 
 		Code code = new Code(clinit);
 		code.setMaxStack(2);
 		clinit.setCode(code);
-		abstractRasterizerVanilla.addMethod(clinit);
+		//abstractRasterizerVanilla.addMethod(clinit);
 
 		Instructions instructions = code.getInstructions();
 		List<Instruction> ins = instructions.getInstructions();
