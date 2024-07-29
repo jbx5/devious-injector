@@ -248,12 +248,14 @@ public class InjectHook extends AbstractInjector
 			ArrayStore as = (ArrayStore) i;
 
 			Field fieldBeingSet = as.getMyField(ic);
+
 			if (fieldBeingSet == null)
 			{
 				return;
 			}
 
 			HookInfo hookInfo = hooked.get(fieldBeingSet);
+
 			if (hookInfo == null)
 			{
 				return;
@@ -261,11 +263,24 @@ public class InjectHook extends AbstractInjector
 
 			StackContext value = ic.getPops().get(0);
 			StackContext index = ic.getPops().get(1);
-
 			StackContext arrayReference = ic.getPops().get(2);
+
+			InstructionContext valuePushedContext = arrayReference.getPushed();
+			InstructionType valuePushedType = valuePushedContext.getInstruction().getType();
+
+			if (valuePushedType == InstructionType.DUP_X2 || valuePushedType == InstructionType.DUP) {
+				StackContext originalValue = valuePushedContext.getPops().get(0);
+				StackContext originalIndex = valuePushedContext.getPops().get(1);
+				StackContext originalArrayReference = valuePushedContext.getPops().get(2);
+				value = originalValue;
+				index = originalIndex;
+				arrayReference = originalArrayReference;
+			}
+
 			InstructionContext arrayReferencePushed = arrayReference.getPushed();
 
 			StackContext objectStackContext = null;
+
 			if (arrayReferencePushed.getInstruction().getType() == InstructionType.GETFIELD)
 			{
 				objectStackContext = arrayReferencePushed.getPops().get(0);

@@ -38,7 +38,7 @@ public class RenderDraw extends AbstractInjector
 		 * This class replaces entity draw invocation instructions
 		 * with the renderDraw method on drawcallbacks
 		 */
-		final net.runelite.asm.pool.Method draw = InjectUtil.findMethod(inject, "draw", "Renderable", null, true, false).getPoolMethod();
+		final net.runelite.asm.pool.Method draw = InjectUtil.findMethod(inject, "draw", "Projection", null, true, false).getPoolMethod();
 
 		final Method drawTile = InjectUtil.findMethod(inject, "drawTile", "Scene", null, true, false);
 

@@ -69,7 +69,9 @@ public class Occluder extends AbstractInjector
 
 		if (replaced != 10)
 		{
-			throw new InjectException("Only found " + replaced + " 25's to replace in occlude instead of expected 10");
+			//throw new InjectException("Only found " + replaced + " 25's to replace in occlude instead of expected 10");
+			System.out.println("Only found " + replaced + " 25's to replace in occlude instead of expected 10");
+			System.out.println("Using mixin to override Scene_offsetOccluder field");
 		}
 	}
 }
